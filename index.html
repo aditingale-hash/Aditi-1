@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aditi Ingale — Software Engineer & Web Engineer</title>
+  <meta name="description" content="Portfolio of Aditi Ashok Ingale — Software Engineer & Master's student in Web Engineering at TU Chemnitz. Specializing in Java, Spring Boot, Cloud, DevOps, and Angular." />
+  
+  <!-- Fonts: Noto Serif JP, Cormorant Garamond, DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Petals Canvas -->
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- Shooting Star Canvas -->
+  <canvas id="star-canvas"></canvas>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-flower">
+    <svg viewBox="0 0 100 100" class="sakura-cursor-icon">
+      <path d="M50,15 C40,0 20,10 25,30 C10,20 0,40 20,50 C0,60 10,80 25,70 C20,90 40,100 50,85 C60,100 80,90 75,70 C90,80 100,60 80,50 C100,40 90,20 75,30 C80,10 60,0 50,15 Z" fill="#FFB7C5"/>
+    </svg>
+  </div>
+  <div id="cursor-trail-container"></div>
+
+  <!-- Loading Screen -->
+  <div id="loader">
+    <div class="loader-petals-wrap" id="loader-petals"></div>
+    <div class="loader-name" id="loader-name">ADITI INGALE</div>
+  </div>
+
+  <!-- Background Moon (rises on scroll) -->
+  <div class="bg-moon" id="bg-moon"></div>
+
+  <!-- Japanese Town Parallax Background -->
+  <div class="parallax-town" id="parallax-town">
+    <div class="town-layer far" id="town-far">
+      <!-- Mountains SVG -->
+      <svg viewBox="0 0 1000 200" preserveAspectRatio="none"><path d="M0,200 L0,150 Q100,50 200,120 T400,100 T600,140 T800,80 T1000,160 L1000,200 Z" fill="#130822"/></svg>
+    </div>
+    <div class="town-layer mid" id="town-mid">
+      <!-- Town/Pagoda layer -->
+      <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
+        <path d="M0,200 L0,180 L50,180 L50,150 L30,150 L60,120 L90,150 L70,150 L70,180 L150,180 L150,130 L120,130 L170,80 L220,130 L190,130 L190,180 L350,180 L350,160 L330,160 L370,120 L410,160 L390,160 L390,180 L500,180 L500,170 L480,170 L520,130 L560,170 L540,170 L540,180 L700,180 L700,140 L670,140 L730,80 L790,140 L760,140 L760,180 L850,180 L850,150 L830,150 L870,110 L910,150 L890,150 L890,180 L1000,180 L1000,200 Z" fill="#0d0517"/>
+        <circle cx="170" cy="110" r="3" fill="#FFB7C5" class="window-glow" />
+        <circle cx="730" cy="110" r="3" fill="#FFB7C5" class="window-glow" />
+        <!-- Lantern string -->
+        <path d="M390,160 Q445,180 500,170" stroke="#0d0517" stroke-width="1" fill="none" class="lantern-string"/>
+        <circle cx="430" cy="168" r="4" fill="#FFB7C5" class="ambient-lantern"/>
+        <circle cx="470" cy="170" r="4" fill="#FFB7C5" class="ambient-lantern"/>
+      </svg>
+      <div class="wispy-clouds"></div>
+    </div>
+    <div class="town-layer near" id="town-near">
+      <!-- Foreground roofs/bamboo -->
+      <svg viewBox="0 0 1000 150" preserveAspectRatio="none">
+        <path d="M0,150 L0,120 L80,90 L160,130 L250,110 L350,140 L450,100 L550,140 L650,110 L750,130 L850,90 L950,120 L1000,100 L1000,150 Z" fill="#05020a"/>
+        <!-- Bamboo stalks -->
+        <rect x="20" y="50" width="4" height="100" fill="#05020a" transform="rotate(5 20 150)"/>
+        <rect x="30" y="70" width="3" height="80" fill="#05020a" transform="rotate(-2 30 150)"/>
+        <rect x="960" y="40" width="5" height="110" fill="#05020a" transform="rotate(-4 960 150)"/>
+        <rect x="980" y="60" width="4" height="90" fill="#05020a" transform="rotate(3 980 150)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Wandering Cats Container -->
+  <div id="cats-container"></div>
+
+  <!-- Torii Gate Menu -->
+  <div class="torii-nav-btn" id="torii-btn">
+    <span class="torii-icon">⛩</span>
+  </div>
+  
+  <div class="torii-overlay" id="torii-overlay">
+    <div class="torii-close" id="torii-close">
+      <svg viewBox="0 0 100 100" width="40" height="40"><path d="M20,20 L80,80 M80,20 L20,80" stroke="#FFF0F5" stroke-width="8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sakura-menu" id="sakura-menu">
+      <a href="#about" class="menu-petal" style="--rot: -60deg;">
+        <span class="eng">About</span><span class="jp">私について</span>
+      </a>
+      <a href="#experience" class="menu-petal" style="--rot: 0deg;">
+        <span class="eng">Experience</span><span class="jp">経験</span>
+      </a>
+      <a href="#skills" class="menu-petal" style="--rot: 60deg;">
+        <span class="eng">Skills</span><span class="jp">スキル</span>
+      </a>
+      <a href="#projects" class="menu-petal" style="--rot: 120deg;">
+        <span class="eng">Projects</span><span class="jp">プロジェクト</span>
+      </a>
+      <a href="#education" class="menu-petal" style="--rot: 180deg;">
+        <span class="eng">Education</span><span class="jp">教育</span>
+      </a>
+      <a href="#contact" class="menu-petal" style="--rot: 240deg;">
+        <span class="eng">Contact</span><span class="jp">連絡先</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Right Side Dot Nav -->
+  <div class="dot-nav" id="dot-nav">
+    <div class="dot-line"></div>
+    <a href="#hero" class="dot active" data-section="hero"><span>Home</span></a>
+    <a href="#about" class="dot" data-section="about"><span>About</span></a>
+    <a href="#experience" class="dot" data-section="experience"><span>Experience</span></a>
+    <a href="#skills" class="dot" data-section="skills"><span>Skills</span></a>
+    <a href="#projects" class="dot" data-section="projects"><span>Projects</span></a>
+    <a href="#education" class="dot" data-section="education"><span>Education</span></a>
+    <a href="#certifications" class="dot" data-section="certifications"><span>Certifications</span></a>
+    <a href="#contact" class="dot" data-section="contact"><span>Contact</span></a>
+  </div>
+
+  <!-- Left Scroll Sakura Indicator -->
+  <div class="left-scroll-branch">
+    <svg viewBox="0 0 50 1000" preserveAspectRatio="none" id="scroll-branch-svg">
+      <path id="scroll-branch-path" d="M10,0 Q30,200 10,400 T20,800 Q10,900 15,1000" fill="none" stroke="#FF6B9D" stroke-width="2" />
+    </svg>
+    <div class="scroll-blossoms" id="scroll-blossoms"></div>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="section hero-section">
+    <div class="hero-bg-tree">
+      <div class="hero-moon" id="hero-center-moon"></div>
+      <div id="fireflies"></div>
+      <svg class="hand-drawn-tree" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMax slice">
+        <path class="tree-trunk" d="M450,800 C460,600 480,450 490,400 C470,300 400,200 300,100 M490,400 C520,320 600,250 700,120 M470,250 C450,150 480,100 550,50 M510,320 C540,280 620,280 650,200" stroke="#110515" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <!-- Clusters -->
+        <g class="blossom-clusters">
+          <circle cx="300" cy="100" r="80" fill="#FFB7C5" opacity="0.6" filter="blur(8px)"/>
+          <circle cx="700" cy="120" r="90" fill="#FFB7C5" opacity="0.5" filter="blur(10px)"/>
+          <circle cx="550" cy="50"  r="70" fill="#FFB7C5" opacity="0.7" filter="blur(6px)"/>
+          <circle cx="470" cy="250" r="100" fill="#FF6B9D" opacity="0.4" filter="blur(12px)"/>
+          <circle cx="650" cy="200" r="60" fill="#FFF0F5" opacity="0.6" filter="blur(5px)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <div class="katakana-name fade-up">アディティ・イングール</div>
+      <div class="fade-up" data-delay="0.2">
+        <h1 class="hero-name">ADITI INGALE</h1>
+      </div>
+
+      <div class="hero-typewriter fade-up" data-delay="0.4">
+        <span id="typewriter-text"></span><span class="cursor-blink">|</span>
+      </div>
+
+      <div class="hero-cta-row fade-up" data-delay="0.6">
+        <a href="#projects" class="btn-lantern-cta">
+          <span class="lantern-top"></span>
+          <span class="lantern-text">View My Work</span>
+          <span class="lantern-btm"></span>
+        </a>
+        <a href="#contact" class="btn-lantern-cta secondary">
+          <span class="lantern-top"></span>
+          <span class="lantern-text">Let's Connect</span>
+          <span class="lantern-btm"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 1000 50" preserveAspectRatio="none"><path d="M0,25 Q250,50 500,25 T1000,25" class="branch-line"/></svg></div>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <h2 class="section-title reveal-text">The Engineer</h2>
+
+      <div class="about-grid">
+        <div class="about-card glass-sakura reveal-up">
+          <div class="about-layout" style="display:flex; gap: 3rem; align-items: center; text-align: left;">
+            <div class="profile-wrap">
+              <div class="profile-inner">
+                <div class="placeholder-skeleton" data-image-key="profile" style="width:100%;height:100%;"></div>
+              </div>
+            </div>
+            
+            <div class="about-text-content">
+              <div class="live-badge">Currently at: European Energy Exchange AG 🇩🇪</div>
+              <p class="about-bio">
+                Hey! I'm <strong class="rose-gold">Aditi</strong> — a Software Engineer currently pursuing my
+                <strong>Master's in Web Engineering at TU Chemnitz, Germany 🇩🇪</strong>.
+              </p>
+              <p class="about-bio">
+                I build robust backend systems, cloud-native applications, and seamless full-stack experiences.
+                With experience spanning <strong>Java/Spring Boot microservices</strong>, <strong>AWS & Docker</strong>,
+                <strong>CI/CD pipelines</strong>, and professional-grade <strong>Power BI dashboards</strong>.
+              </p>
+              <p class="about-bio">
+                Previously at <strong>Capgemini</strong> where I built POS/kiosk apps for McDonald's,
+                automated JIRA-ServiceNow workflows, and led data engineering initiatives —
+                now automating energy trading processes at <strong>European Energy Exchange AG</strong>.
+              </p>
+            </div>
+          </div>
+          
+          <div class="about-stats">
+            <div class="stat-item"><div class="stat-num">4+</div><div class="stat-label">Years Exp.</div></div>
+            <div class="stat-item"><div class="stat-num">6+</div><div class="stat-label">Roles</div></div>
+            <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Projects</div></div>
+            <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Countries</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 1000 50" preserveAspectRatio="none"><path d="M0,25 Q250,5 500,25 T1000,25" class="branch-line"/></svg></div>
+
+  <!-- ===================== EXPERIENCE ===================== -->
+  <section id="experience" class="section experience-section">
+    <div class="container">
+      <h2 class="section-title reveal-text">My Journey</h2>
+
+      <div class="lantern-timeline">
+        <div class="lantern-string"></div>
+
+        <div class="timeline-row">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body">
+              <div class="lantern-light"></div>
+            </div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-right">
+            <div class="exp-date">Sept 2025 — Present</div>
+            <h3 class="exp-role">Automation Engineer</h3>
+            <div class="exp-company">European Energy Exchange AG 🇩🇪</div>
+            <p class="exp-desc">Automating energy trading processes and workflows for one of Europe's leading energy exchanges in Leipzig, Germany.</p>
+            <div class="exp-tags"><span>Python</span><span>Automation</span><span>Energy Markets</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-row alt">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body">
+              <div class="lantern-light"></div>
+            </div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-left">
+            <div class="exp-date">June — Aug 2025</div>
+            <h3 class="exp-role">Software Developer</h3>
+            <div class="exp-company">AI2Connect GmbH 🇩🇪</div>
+            <p class="exp-desc">Developed AI-powered software solutions, integrating generative AI models into production-ready applications.</p>
+            <div class="exp-tags"><span>Generative AI</span><span>Python</span><span>APIs</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body">
+              <div class="lantern-light"></div>
+            </div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-right">
+            <div class="exp-date">Sept 2022 — May 2024</div>
+            <h3 class="exp-role">Software Analyst</h3>
+            <div class="exp-company">Capgemini</div>
+            <p class="exp-desc">Built POS/kiosk applications for McDonald's. Automated JIRA↔ServiceNow ticket workflows (30% faster resolution). Created Power BI dashboards.</p>
+            <div class="exp-tags"><span>Java</span><span>Spring Boot</span><span>JIRA</span><span>ServiceNow</span><span>Power BI</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-row alt">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body">
+              <div class="lantern-light"></div>
+            </div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-left">
+            <div class="exp-date">Jan — Apr 2022</div>
+            <h3 class="exp-role">Software Engineer Trainee</h3>
+            <div class="exp-company">Capgemini</div>
+            <p class="exp-desc">Built microservices architectures and established Jenkins CI/CD pipelines. Contributed to deploying containerized backend services.</p>
+            <div class="exp-tags"><span>Microservices</span><span>Jenkins</span><span>Docker</span><span>CI/CD</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body">
+              <div class="lantern-light"></div>
+            </div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-right">
+            <div class="exp-date">2021</div>
+            <h3 class="exp-role">Developer Intern</h3>
+            <div class="exp-company">The Sparks Foundation</div>
+            <p class="exp-desc">Implemented a payment gateway with full UPI integration, enabling seamless digital transactions for end users.</p>
+            <div class="exp-tags"><span>Payment Gateway</span><span>UPI</span><span>Java</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-row alt">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body">
+              <div class="lantern-light"></div>
+            </div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-left">
+            <div class="exp-date">2021</div>
+            <h3 class="exp-role">ML/Data Intern</h3>
+            <div class="exp-company">Neuronode Technologies</div>
+            <p class="exp-desc">Built a real-time stock market dashboard with live price feeds, candlestick charts, and predictive analysis using yfinance and Streamlit Cloud.</p>
+            <div class="exp-tags"><span>Python</span><span>yfinance</span><span>Streamlit</span><span>Data Viz</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 1000 50" preserveAspectRatio="none"><path d="M0,25 Q250,50 500,25 T1000,25" class="branch-line"/></svg></div>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section id="skills" class="section skills-section">
+    <div class="container">
+      <h2 class="section-title reveal-text">Sakura Garden</h2>
+      <p class="section-subtitle">Hover over the branches to see them bloom.</p>
+
+      <div class="garden-grid">
+        <!-- Backend Branch -->
+        <div class="bonsai-branch reveal-up" data-delay="0">
+          <h3 class="bonsai-title">Backend</h3>
+          <div class="branch-graphic">
+             <svg viewBox="0 0 200 150" class="svg-branch">
+               <path d="M10,140 Q50,70 190,40" class="branch-wood" />
+               <path d="M60,100 Q100,50 150,90" class="branch-wood" />
+             </svg>
+             <div class="flower-node" style="left:50px; top:80px;" data-tip="Java">🌸</div>
+             <div class="flower-node" style="left:120px; top:40px;" data-tip="Spring Boot">🌸</div>
+             <div class="flower-node" style="left:170px; top:30px;" data-tip="REST APIs">🌸</div>
+             <div class="flower-node" style="left:140px; top:80px;" data-tip="Microservices">🌸</div>
+          </div>
+        </div>
+
+        <!-- Cloud Branch -->
+        <div class="bonsai-branch reveal-up" data-delay="0.1">
+          <h3 class="bonsai-title">Cloud & DevOps</h3>
+          <div class="branch-graphic">
+             <svg viewBox="0 0 200 150" class="svg-branch">
+               <path d="M190,140 Q150,70 10,40" class="branch-wood" />
+               <path d="M140,100 Q100,50 50,90" class="branch-wood" />
+             </svg>
+             <div class="flower-node" style="left:150px; top:80px;" data-tip="AWS">🌸</div>
+             <div class="flower-node" style="left:80px; top:50px;" data-tip="Docker">🌸</div>
+             <div class="flower-node" style="left:30px; top:20px;" data-tip="Jenkins">🌸</div>
+             <div class="flower-node" style="left:60px; top:85px;" data-tip="Ansible">🌸</div>
+          </div>
+        </div>
+
+        <!-- Frontend Branch -->
+        <div class="bonsai-branch reveal-up" data-delay="0.2">
+          <h3 class="bonsai-title">Frontend</h3>
+          <div class="branch-graphic">
+             <svg viewBox="0 0 200 150" class="svg-branch">
+               <path d="M10,120 Q100,100 180,50" class="branch-wood" />
+             </svg>
+             <div class="flower-node" style="left:50px; top:110px;" data-tip="Angular">🌸</div>
+             <div class="flower-node" style="left:110px; top:85px;" data-tip="HTML/CSS">🌸</div>
+             <div class="flower-node" style="left:170px; top:45px;" data-tip="Streamlit">🌸</div>
+          </div>
+        </div>
+
+        <!-- Data & AI Branch -->
+        <div class="bonsai-branch reveal-up" data-delay="0.3">
+          <h3 class="bonsai-title">Data & AI</h3>
+          <div class="branch-graphic">
+             <svg viewBox="0 0 200 150" class="svg-branch">
+               <path d="M190,120 Q100,100 20,50" class="branch-wood" />
+             </svg>
+             <div class="flower-node" style="left:150px; top:110px;" data-tip="Python">🌸</div>
+             <div class="flower-node" style="left:90px; top:85px;" data-tip="Power BI">🌸</div>
+             <div class="flower-node" style="left:30px; top:55px;" data-tip="Gen AI">🌸</div>
+          </div>
+        </div>
+
+        <!-- Tools Branch -->
+        <div class="bonsai-branch reveal-up" data-delay="0.4">
+          <h3 class="bonsai-title">Tools</h3>
+          <div class="branch-graphic">
+             <svg viewBox="0 0 200 150" class="svg-branch">
+               <path d="M100,140 Q100,70 50,20 M100,100 Q150,60 180,30" class="branch-wood" />
+             </svg>
+             <div class="flower-node" style="left:95px; top:100px;" data-tip="Git">🌸</div>
+             <div class="flower-node" style="left:60px; top:40px;" data-tip="JIRA">🌸</div>
+             <div class="flower-node" style="left:150px; top:50px;" data-tip="ServiceNow">🌸</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 1000 50" preserveAspectRatio="none"><path d="M0,25 Q250,5 500,25 T1000,25" class="branch-line"/></svg></div>
+
+  <!-- ===================== PROJECTS ===================== -->
+  <section id="projects" class="section projects-section">
+    <div class="container">
+      <h2 class="section-title reveal-text">Featured Work</h2>
+
+      <div class="projects-grid">
+
+        <div class="origami-card reveal-up" data-delay="0">
+          <div class="origami-inner">
+            <div class="origami-front">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.stockDashboard"></div>
+              <div class="card-bottom-content">
+                <div class="sakura-watermark">🌸</div>
+                <h3 class="project-title">Stock Dashboard</h3>
+                <p class="click-hint">Hover to unfold</p>
+              </div>
+            </div>
+            <div class="origami-unfold">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.stockDashboard"></div>
+              <div class="card-bottom-content">
+                <h3 class="project-title">Stock Dashboard</h3>
+                <p class="project-desc">Real-time stock dashboard with live price feeds, candlestick charts, and trend analysis. Deployed on Streamlit Cloud.</p>
+                <div class="project-tags"><span>Python</span><span>yfinance</span><span>Streamlit</span><span>Pandas</span></div>
+                <a href="https://github.com/aditiingale" target="_blank" class="project-link">View Code &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="origami-card reveal-up" data-delay="0.1">
+          <div class="origami-inner">
+            <div class="origami-front">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.paymentGateway"></div>
+              <div class="card-bottom-content">
+                <div class="sakura-watermark">🌸</div>
+                <h3 class="project-title">Payment Gateway UPI</h3>
+                <p class="click-hint">Hover to unfold</p>
+              </div>
+            </div>
+            <div class="origami-unfold">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.paymentGateway"></div>
+              <div class="card-bottom-content">
+                <h3 class="project-title">Payment Gateway UPI</h3>
+                <p class="project-desc">Secure payment gateway integrating UPI payment flows, enabling seamless digital transactions with real-time validation.</p>
+                <div class="project-tags"><span>Java</span><span>Spring Boot</span><span>UPI API</span></div>
+                <a href="https://github.com/aditiingale" target="_blank" class="project-link">View Code &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="origami-card reveal-up" data-delay="0.2">
+          <div class="origami-inner">
+            <div class="origami-front">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.pos"></div>
+              <div class="card-bottom-content">
+                <div class="sakura-watermark">🌸</div>
+                <h3 class="project-title">McDonald's POS</h3>
+                <p class="click-hint">Hover to unfold</p>
+              </div>
+            </div>
+            <div class="origami-unfold">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.pos"></div>
+              <div class="card-bottom-content">
+                <h3 class="project-title">McDonald's POS</h3>
+                <p class="project-desc">Enterprise-grade POS & kiosk application. Handles order management, inventory tracking, and payment processing at scale.</p>
+                <div class="project-tags"><span>Java</span><span>Spring Boot</span><span>Microservices</span></div>
+                <span class="project-link disabled">Confidential</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="origami-card reveal-up" data-delay="0.3">
+          <div class="origami-inner">
+            <div class="origami-front">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.automation"></div>
+              <div class="card-bottom-content">
+                <div class="sakura-watermark">🌸</div>
+                <h3 class="project-title">JIRA Automation</h3>
+                <p class="click-hint">Hover to unfold</p>
+              </div>
+            </div>
+            <div class="origami-unfold">
+              <div class="project-cover placeholder-skeleton" data-image-key="projects.automation"></div>
+              <div class="card-bottom-content">
+                <h3 class="project-title">JIRA Automation</h3>
+                <p class="project-desc">Intelligent automation tool syncing tickets between JIRA and ServiceNow, reducing resolution time by 30% through smart categorization.</p>
+                <div class="project-tags"><span>Python</span><span>REST APIs</span><span>ServiceNow</span></div>
+                <span class="project-link disabled">Confidential</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 1000 50" preserveAspectRatio="none"><path d="M0,25 Q250,50 500,25 T1000,25" class="branch-line"/></svg></div>
+
+  <!-- ===================== EDUCATION ===================== -->
+  <section id="education" class="section education-section">
+    <div class="container">
+      <h2 class="section-title reveal-text">Academic Foundation</h2>
+
+      <div class="lantern-timeline">
+        <div class="lantern-string"></div>
+
+        <div class="timeline-row alt">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body"><div class="lantern-light"></div></div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-left">
+            <div class="exp-date">2024 — 2026</div>
+            <h3 class="exp-role">M.Sc. Web Engineering</h3>
+            <div class="exp-company">Technische Universität Chemnitz 🇩🇪</div>
+            <p class="exp-desc">Advanced studies in web technologies, distributed systems, software engineering, and modern full-stack development.</p>
+            <div class="exp-tags"><span>Web Engineering</span><span>Distributed Systems</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="lantern reveal-glow">
+            <div class="lantern-body"><div class="lantern-light"></div></div>
+          </div>
+          <div class="timeline-card glass-sakura reveal-right">
+            <div class="exp-date">2018 — 2022</div>
+            <h3 class="exp-role">B.E. Computer Engineering (Data Science)</h3>
+            <div class="exp-company">Savitribai Phule Pune University 🇮🇳</div>
+            <p class="exp-desc">Bachelor's with Honours specialization in Data Science. Strong foundation in algorithms, databases, and software design.</p>
+            <div class="exp-tags"><span>Computer Engineering</span><span>Data Science</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CERTIFICATIONS ===================== -->
+  <section id="certifications" class="section certs-section">
+    <div class="container">
+      <h2 class="section-title reveal-text" style="font-size: 2.2rem;">Certifications</h2>
+      
+      <div class="certs-grid">
+        <div class="cert-origami glass-sakura reveal-up">
+           <div class="cert-name">Generative AI Essentials</div>
+           <div class="cert-issuer">Google / Coursera</div>
+        </div>
+        <div class="cert-origami glass-sakura reveal-up" data-delay="0.1">
+           <div class="cert-name">Entry Level Developer (Level 2)</div>
+           <div class="cert-issuer">IBM / Coursera</div>
+        </div>
+        <div class="cert-origami glass-sakura reveal-up" data-delay="0.2">
+           <div class="cert-name">Data Engineering for Everyone</div>
+           <div class="cert-issuer">DataCamp</div>
+        </div>
+        <div class="cert-origami glass-sakura reveal-up" data-delay="0.3">
+           <div class="cert-name">Getting Started with Google Sheets</div>
+           <div class="cert-issuer">Google / Coursera</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 1000 50" preserveAspectRatio="none"><path d="M0,25 Q250,5 500,25 T1000,25" class="branch-line"/></svg></div>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <h2 class="section-title reveal-text">Let's Connect</h2>
+
+      <div class="tanabata-tree" id="tanabata-tree">
+        <svg viewBox="0 0 800 600" preserveAspectRatio="none" class="contact-tree-svg">
+          <path d="M400,600 Q420,400 350,200 M350,200 Q300,100 200,50 M350,200 Q450,150 600,100 M400,350 Q250,300 100,250 M410,450 Q550,400 750,350" stroke="#110515" stroke-width="8" fill="none" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Tanzaku Links -->
+        <a href="mailto:aditiingale20001946@gmail.com" class="tanzaku-link" style="left: 20%; top: 35%;">
+          <div class="tanzaku-thread"></div>
+          <div class="tanzaku-paper color-blue">
+            <span class="t-icon">✉️</span>
+            Email
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/aditi-ashokingale" target="_blank" class="tanzaku-link" style="left: 70%; top: 25%;">
+          <div class="tanzaku-thread"></div>
+          <div class="tanzaku-paper color-pink">
+            <span class="t-icon">💼</span>
+            LinkedIn
+          </div>
+        </a>
+        <a href="https://my-porfolio-git-main-aditingalehashs-projects.vercel.app" target="_blank" class="tanzaku-link" style="left: 45%; top: 10%;">
+          <div class="tanzaku-thread"></div>
+          <div class="tanzaku-paper color-yellow">
+            <span class="t-icon">🌐</span>
+            Portfolio
+          </div>
+        </a>
+
+        <!-- Form Tanzaku -->
+        <div class="tanzaku-form-wrap" style="left: 55%; top: 55%;">
+          <div class="tanzaku-thread"></div>
+          <form class="tanzaku-form color-white" id="contact-form">
+            <input type="text" placeholder="Your Name" required />
+            <input type="email" placeholder="Your Email" required />
+            <textarea placeholder="Your Message" rows="3" required></textarea>
+            <button type="submit">Send a Wish 🌟</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-name">Aditi Ashok Ingale 🌸</div>
+      <div class="footer-copy">© 2026 — Crafted with ♥ in Germany</div>
+    </div>
+  </footer>
+
+  <!-- Skill tooltip -->
+  <div class="skill-tooltip" id="skill-tooltip"></div>
+
+  <!-- Konami Easter Egg Overlay -->
+  <div class="konami-overlay" id="konami-overlay">
+    <div class="konami-message">🎉 YOU FOUND THE EASTER EGG! 🎉</div>
+  </div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
