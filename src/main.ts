@@ -24,7 +24,7 @@ const mouse = { x: -1000, y: -1000 };
 
 // 🌸 Replace these URLs with your own images if needed
 const IMAGES = {
-  profile: "/profile.jpg",
+  profile: "./profile.jpg",
   projects: {
     stockDashboard: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=800&auto=format&fit=crop", // stock chart dark
     paymentGateway: "https://images.unsplash.com/photo-1556740714-a8395b3bf30f?q=80&w=800&auto=format&fit=crop", // fintech
