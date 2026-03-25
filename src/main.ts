@@ -678,6 +678,69 @@ function initEasterEggs() {
 }
 
 // ============================================================
+// AI CHATBOT WIDGET
+// ============================================================
+function initChatbot() {
+  const toggle = document.getElementById('chat-toggle');
+  const win = document.getElementById('chat-window');
+  const close = document.getElementById('chat-close');
+  const messages = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input') as HTMLInputElement;
+  const send = document.getElementById('chat-send');
+
+  if (!toggle || !win || !close || !messages || !input || !send) return;
+
+  toggle.addEventListener('click', () => win.classList.add('open'));
+  close.addEventListener('click', () => win.classList.remove('open'));
+
+  const brain = [
+    { keys: ['experience', 'work', 'job', 'company', 'role', 'capgemini', 'eex'], text: "Aditi is currently a QA Automation Engineer at EEX Group in Germany (using Playwright, Docker, Python). Previously, she worked at AI2Connect, Capgemini (where she optimized manual workflows by 50%), and Neuronode!" },
+    { keys: ['education', 'degree', 'study', 'university', 'college', 'masters', 'bachelors'], text: "She is pursuing her M.Sc. in Web Engineering at TU Chemnitz, Germany 🇩🇪. She also holds a B.E. in Computer Engineering with Honors in Data Science from Pune University 🇮🇳." },
+    { keys: ['skills', 'stack', 'technologies', 'programming', 'tech', 'language', 'know'], text: "Her top skills include Java, Spring Boot, Python, C++, React.js, Angular, Node.js, AWS, Docker, HTML/CSS, CI/CD, SQL, and Playwright." },
+    { keys: ['certifications', 'certificates', 'aws', 'certified'], text: "Aditi holds an AWS Certified Cloud Practitioner cert, Generative AI Essentials, and DevOps Foundations among many others." },
+    { keys: ['projects', 'portfolio', 'made', 'build'], text: "She has built awesome projects like 'Cat Code Adventure' (Phaser.js), a Donation Portal, a Stock Analyzer, and a Speech to Sign converter!" },
+    { keys: ['contact', 'email', 'reach', 'touch', 'hire'], text: "You can email her at aditiingale20001946@gmail.com, or check her LinkedIn: linkedin.com/in/aditi-ashok-ingale" },
+    { keys: ['hi', 'hello', 'hey', 'greetings'], text: "Hello! I am Aditi's personal AI. What would you like to know about her background?" },
+    { keys: ['where', 'location', 'live', 'city'], text: "She is currently based in Leipzig, Germany 🇩🇪, originally from Pune, India." }
+  ];
+
+  function addMsg(text: string, type: 'user' | 'bot') {
+    const d = document.createElement('div');
+    d.className = `message ${type}-msg`;
+    d.textContent = text;
+    messages?.appendChild(d);
+    if (messages) messages.scrollTop = messages.scrollHeight;
+  }
+
+  function handleSend() {
+    const text = input.value.trim().toLowerCase();
+    if (!text) return;
+    addMsg(input.value, 'user');
+    input.value = '';
+
+    // Simulated typing delay
+    setTimeout(() => {
+      let matched = false;
+      for (const item of brain) {
+        if (item.keys.some(k => text.includes(k))) {
+          addMsg(item.text, 'bot');
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) {
+        addMsg("I'm not exactly sure! But I know Aditi would love to hear from you. You can email her directly at aditiingale20001946@gmail.com to find out.", 'bot');
+      }
+    }, 600);
+  }
+
+  send.addEventListener('click', handleSend);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSend();
+  });
+}
+
+// ============================================================
 // MAIN BOOTSTRAP
 // ============================================================
 async function main() {
@@ -693,6 +756,7 @@ async function main() {
   initImages();
   initMinorPieces();
   initEasterEggs();
+  initChatbot();
 }
 
 main();

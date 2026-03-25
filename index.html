@@ -15,6 +15,9 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&family=Noto+Serif+JP:wght@400;700;900&display=swap"
     rel="stylesheet" />
 
+  <!-- 3D Model Viewer API -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
   <link rel="stylesheet" href="/src/style.css" />
 
   <!-- ATS/SEO Semantic Structured Data (JSON-LD) -->
@@ -816,6 +819,37 @@
 
     </div>
   </section>
+
+  <!-- AI Assistant Chatbot -->
+  <div class="ai-chat-widget">
+    <div class="chat-toggle-btn" id="chat-toggle" title="Chat with Doraemon AI!">
+      <span class="chat-icon" style="display:flex; justify-content:center; align-items:center; width:100%; height:100%; pointer-events:none;">
+        <model-viewer
+          src="/DORAEMON.glb"
+          auto-rotate
+          rotation-per-second="30deg"
+          disable-zoom
+          disable-tap
+          interaction-prompt="none"
+          style="width: 140%; height: 140%; outline: none;"
+        ></model-viewer>
+      </span>
+    </div>
+    <div class="chat-window" id="chat-window">
+      <div class="chat-header">
+        <span class="bot-name">Aditi's AI 🌸</span>
+        <span class="close-chat" id="chat-close">&times;</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot-msg">Hi! I'm Aditi's personal AI interface. Ask me about her profile, background, or skills!</div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off" />
+        <button id="chat-send">➤</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Footer -->
   <footer class="footer">
