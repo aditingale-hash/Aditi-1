@@ -26,11 +26,11 @@ const mouse = { x: -1000, y: -1000 };
 const IMAGES = {
   profile: "./profile.jpg",
   projects: {
-    catCode: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop", 
-    spectacles: "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=800&auto=format&fit=crop", 
-    donation: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=800&auto=format&fit=crop", 
-    stockApp: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=800&auto=format&fit=crop",
-    speechSign: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&auto=format&fit=crop"
+    catCode: "./catCode.png", 
+    spectacles: "./spectacles.png", 
+    donation: "./donation.jpg", 
+    stockApp: "./stockApp.jpg",
+    speechSign: "./speechSign.jpg"
   }
 };
 
@@ -521,11 +521,11 @@ function initImages() {
 // MINOR COMPONENTS (Typewriter, Reveals, etc)
 // ============================================================
 function initMinorPieces() {
-  // Lenis Smooth Scroll
-  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
-  function raf(time: number) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+  // Lenis Smooth Scroll sync with GSAP
+  const lenis = new Lenis({ lerp: 0.08, autoResize: true });
   lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
 
   // Typewriter
   const phrases = ['Software Engineer', 'Cloud Architect', 'Web Dreamer'];

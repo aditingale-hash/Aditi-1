@@ -29,7 +29,14 @@
   --transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-html { scroll-behavior: smooth; overflow-x: hidden; }
+/* Lenis Recommended CSS */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+html { overflow-x: hidden; }
 
 body {
   background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-btm) 100%);
@@ -243,6 +250,30 @@ img { max-width: 100%; }
   text-align: center;
   margin-bottom: 2rem;
   margin-top: -2.5rem;
+}
+
+.dynamic-skill-hint {
+  font-family: var(--font-sub);
+  color: var(--teal);
+  font-size: 1.2rem;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: -2.5rem;
+  animation: hint-pulse 1.5s infinite alternate ease-in-out;
+  pointer-events: none;
+}
+.dynamic-skill-hint .hint-icon {
+  display: inline-block;
+  animation: hint-bounce 1s infinite alternate ease-in-out;
+}
+@keyframes hint-pulse {
+  0% { opacity: 0.7; transform: scale(0.98); text-shadow: 0 0 2px var(--teal); }
+  100% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 15px var(--teal); }
+}
+@keyframes hint-bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
 }
 
 .glass-sakura {
@@ -530,6 +561,41 @@ img { max-width: 100%; }
 .bonsai-branch:hover .flower-node { transform: scale(1.2) rotate(15deg); opacity: 1; filter: grayscale(0); }
 .flower-node:hover { transform: scale(1.5) rotate(45deg) !important; z-index: 10; }
 
+/* Demo Hover Animations */
+.demo-flower {
+  animation: demo-bloom 4s infinite ease-in-out;
+}
+@keyframes demo-bloom {
+  0%, 30% { transform: scale(0.6); opacity: 0.7; filter: grayscale(1); }
+  45%, 60% { transform: scale(1.5) rotate(45deg); opacity: 1; filter: grayscale(0); text-shadow: 0 0 15px var(--pink); z-index: 10; }
+  80%, 100% { transform: scale(0.6); opacity: 0.7; filter: grayscale(1); }
+}
+
+.demo-cursor {
+  position: absolute;
+  font-size: 1.8rem;
+  z-index: 20;
+  pointer-events: none;
+  animation: demo-cursor-anim 4s infinite ease-in-out;
+  filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.6));
+}
+@keyframes demo-cursor-anim {
+  0% { opacity: 0; transform: translate(110px, 130px); }
+  25% { opacity: 1; transform: translate(70px, 100px); }
+  45%, 60% { opacity: 1; transform: translate(55px, 85px) scale(0.85); }
+  80% { opacity: 0; transform: translate(70px, 100px); }
+  100% { opacity: 0; transform: translate(110px, 130px); }
+}
+
+/* Pause and hide the demo if user actually hovers the branch */
+.bonsai-branch:hover .demo-cursor,
+.bonsai-branch:hover .demo-flower {
+  animation: none;
+}
+.bonsai-branch:hover .demo-cursor {
+  opacity: 0;
+}
+
 .skill-tooltip {
   position: fixed; z-index: 5000; background: rgba(26,10,46,0.9);
   border: 1px solid var(--pink); border-radius: 8px; padding: 0.4rem 0.8rem;
@@ -613,6 +679,41 @@ img { max-width: 100%; }
   transform-origin: center right;
 }
 .origami-card:hover .origami-inner { transform: translateX(-100%) rotateY(-180deg); }
+
+/* --- Auto Flip Demo --- */
+.demo-flip .origami-inner {
+  animation: demo-card-flip 6s infinite ease-in-out;
+}
+@keyframes demo-card-flip {
+  0%, 15% { transform: none; }
+  35%, 65% { transform: translateX(-100%) rotateY(-180deg); }
+  85%, 100% { transform: none; }
+}
+.origami-card.demo-flip:hover .origami-inner {
+  animation: none;
+  transform: translateX(-100%) rotateY(-180deg);
+}
+
+/* --- Demo Tooltip (Skills section) --- */
+.demo-hover-tooltip {
+  position: absolute;
+  top: -45px; left: 50%; transform: translateX(-50%);
+  background: rgba(26,10,46,0.9);
+  border: 1px solid var(--pink); border-radius: 8px; padding: 0.4rem 0.8rem;
+  font-size: 0.8rem; color: var(--white); font-family: var(--font-head);
+  white-space: nowrap; pointer-events: none;
+  opacity: 0;
+  animation: demo-tooltip-anim 4s infinite ease-in-out;
+}
+@keyframes demo-tooltip-anim {
+  0%, 30% { opacity: 0; transform: translateX(-50%) translateY(5px); }
+  45%, 60% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80%, 100% { opacity: 0; transform: translateX(-50%) translateY(5px); }
+}
+.bonsai-branch:hover .demo-hover-tooltip {
+  animation: none;
+  opacity: 0;
+}
 
 .origami-front, .origami-unfold {
   position: absolute; inset: 0; backface-visibility: hidden;
@@ -766,3 +867,45 @@ img { max-width: 100%; }
 }
 .reveal-glow.visible { animation: soft-glow 2s forwards; }
 @keyframes soft-glow { to { filter: drop-shadow(0 0 10px var(--pink)); } }
+
+/* ===================== CREATIVE NAVBAR ===================== */
+.creative-navbar {
+  position: fixed;
+  top: 1rem; left: 50%; transform: translateX(-50%);
+  width: auto;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0.8rem 2.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-brd);
+  border-radius: 100px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255,183,197,0.1);
+  z-index: 9999;
+  transition: all var(--transition);
+}
+.nav-links {
+  display: flex; gap: 2rem;
+}
+.nav-links a {
+  font-family: var(--font-sub); font-size: 1.1rem; color: var(--white);
+  position: relative; transition: color 0.3s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: var(--teal);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover {
+  color: var(--teal);
+}
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .creative-navbar { padding: 0.6rem 1.2rem; top: 0.5rem; width: 95%; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.9rem; }
+  .nav-brand { font-size: 1.1rem; }
+}

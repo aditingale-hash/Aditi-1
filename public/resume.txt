@@ -1,0 +1,67 @@
+ADITI ASHOK INGALE
+Software Engineer & Web Engineering Master's Student
+Location: Leipzig, Germany
+Email: aditiingale20001946@gmail.com
+LinkedIn: linkedin.com/in/aditi-ashokingale
+Portfolio: my-porfolio-git-main-aditingalehashs-projects.vercel.app
+
+SUMMARY
+Software Engineer building robust backend systems, cloud-native apps, and full-stack experiences. Expertise in Java/Spring Boot microservices, AWS, Docker, Python, and Gen AI.
+
+EXPERIENCE
+Automation Engineer
+European Energy Exchange AG (Leipzig, Germany)
+Sept 2025 - Present
+- Automating energy trading processes and workflows for one of Europe's leading energy exchanges.
+- Tech: Python, Automation, Energy Markets
+
+Software Developer
+AI2Connect GmbH (Germany)
+June - Aug 2025
+- Developed AI-powered software solutions, integrating generative AI models into production-ready applications.
+- Tech: Generative AI, Python, APIs
+
+Software Analyst
+Capgemini
+Sept 2022 - May 2024
+- Built POS/kiosk applications for McDonald's. 
+- Automated JIRA-ServiceNow ticket workflows (30% faster resolution). 
+- Created Power BI dashboards.
+- Tech: Java, Spring Boot, JIRA, ServiceNow, Power BI
+
+Software Engineer Trainee
+Capgemini
+Jan - Apr 2022
+- Built microservices architectures and established Jenkins CI/CD pipelines. 
+- Contributed to deploying containerized backend services.
+- Tech: Microservices, Jenkins, Docker, CI/CD
+
+Developer Intern
+The Sparks Foundation
+2021
+- Implemented a payment gateway with full UPI integration, enabling seamless digital transactions.
+- Tech: Payment Gateway, UPI, Java
+
+ML/Data Intern
+Neuronode Technologies
+2021
+- Built a real-time stock market dashboard with live price feeds, candlestick charts, and predictive analysis using yfinance and Streamlit Cloud.
+- Tech: Python, yfinance, Streamlit, Data Viz
+
+EDUCATION
+M.Sc. Web Engineering
+Technische Universität Chemnitz (Germany)
+2024 - 2026
+- Advanced studies in web technologies, distributed systems, software engineering.
+
+B.E. Computer Engineering (Data Science)
+Savitribai Phule Pune University (India)
+2018 - 2022
+- Honours specialization in Data Science. Strong foundation in algorithms, databases.
+
+SKILLS
+Backend: Java, Spring Boot, REST APIs, Microservices
+Cloud & DevOps: AWS, Docker, Jenkins, Ansible
+Frontend: Angular, HTML/CSS, Streamlit
+Data & AI: Python, Power BI, Generative AI
+Tools: Git, JIRA, ServiceNow
